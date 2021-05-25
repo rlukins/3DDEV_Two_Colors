@@ -15,13 +15,11 @@ public class PlayerMovement : MonoBehaviour
     Vector3 velocity;
     bool isGround;
 
-    void Start()
-    {
+    void Start() {
         
     }
 
-    void Update()
-    {
+    void Update() {
         isGround = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
         if(isGround && velocity.y < 0) {
             velocity.y = -2f;
