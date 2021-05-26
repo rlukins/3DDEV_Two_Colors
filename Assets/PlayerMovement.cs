@@ -36,8 +36,18 @@ public class PlayerMovement : MonoBehaviour
 
         controller.Move(velocity * Time.deltaTime);
         
+        // Yump logic
         if(Input.GetKeyDown("space") && isGround) {
-            velocity.y = Mathf.Sqrt(-2f * gravity);
+            velocity.y = Mathf.Sqrt(-6f * gravity);
+        }
+
+        // Sprint logic
+        if(Input.GetKey(KeyCode.LeftShift)) {
+            if(movespeed < 24f) {
+                movespeed+= 0.1f;
+            }
+        } else {
+            movespeed = 12f;
         }
     }
 }
