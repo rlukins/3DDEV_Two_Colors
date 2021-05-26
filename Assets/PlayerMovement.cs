@@ -2,21 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
-{
+public class PlayerMovement : MonoBehaviour {
     public CharacterController controller;
     public Transform groundCheck;
     public Transform Spider;
     public LayerMask groundMask;
     AudioSource audio;
     AudioClip footstep;
-
     public float movespeed = 12f;
     public float gravity = -9.81f;
     public float groundDistance = 0.4f;
-    
+    float distToSpider;
     Vector3 velocity;
     bool isGround;
+    bool isFollowing;
 
     void Start() {
         audio = GetComponent<AudioSource>();
@@ -28,7 +27,7 @@ public class PlayerMovement : MonoBehaviour
         if(isGround && velocity.y < 0) {
             velocity.y = -2f;
         }
-
+        
         float xMove = Input.GetAxis("Horizontal");
         float zMove = Input.GetAxis("Vertical");
 
@@ -52,8 +51,9 @@ public class PlayerMovement : MonoBehaviour
             movespeed = 12f;
         }
 
-        // Call backup
-        if(Input.GetKeyDown(KeyCode.G)) {
+        // Following logic
+        distToSpider = Vector3.Distance(transform.position, Spider.position);
+        if(distToSpider < 20f && !isFollowing) {
             StartCoroutine(MyCoroutine(Spider));
         }
 
@@ -69,10 +69,12 @@ public class PlayerMovement : MonoBehaviour
     }
 
     IEnumerator MyCoroutine(Transform Spider) {
+        isFollowing = true;
         while(Vector3.Distance(transform.position, Spider.position) > 5f) {
-            Spider.position = Vector3.Lerp(Spider.position, transform.position, 0.5f * Time.deltaTime);
+            Spider.position = Vector3.Lerp(Spider.position, transform.position, 0.5f * Time.deltaTime); // zirnekļa pos = no zirnekļa pos līdz player pos, step = puse no frametime
             yield return null;
         }
+        isFollowing = false;
     }
 
     void PlaySound() {
