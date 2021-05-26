@@ -18,7 +18,7 @@ public class FlashlightScript : MonoBehaviour
         }
     }
 
-    private void turnOnOff(bool onoff) {
+    void turnOnOff(bool onoff) {
        flash.enabled = onoff;
        if(onoff==true) {
            Debug.Log("Flashlight turned on");
