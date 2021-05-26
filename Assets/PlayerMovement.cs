@@ -21,7 +21,6 @@ public class PlayerMovement : MonoBehaviour
     void Start() {
         audio = GetComponent<AudioSource>();
         controller = GetComponent<CharacterController>();
-        StartCoroutine(MyCoroutine(Spider));
     }
 
     void Update() {
@@ -53,22 +52,27 @@ public class PlayerMovement : MonoBehaviour
             movespeed = 12f;
         }
 
+        // Call backup
+        if(Input.GetKeyDown(KeyCode.G)) {
+            StartCoroutine(MyCoroutine(Spider));
+        }
+
         // Footstep sound
-        if(isGround && Input.GetKey(KeyCode.W)) { 
+        if(isGround &&
+        Input.GetKey(KeyCode.W) ||
+        Input.GetKey(KeyCode.A) ||
+        Input.GetKey(KeyCode.S) ||
+        Input.GetKey(KeyCode.D)
+        ){ 
             PlaySound();
         }
     }
-
+    
     IEnumerator MyCoroutine(Transform Spider) {
-        while(Vector3.Distance(transform.position, Spider.position) > 0.2f) {
-            Spider.position = Vector3.Lerp(Spider.position, transform.position, 1f * Time.deltaTime);
-            Debug.Log(Vector3.Distance(transform.position, Spider.position));
+        while(Vector3.Distance(transform.position, Spider.position) > 5f) {
+            Spider.position = Vector3.Lerp(Spider.position, transform.position, 0.5f * Time.deltaTime);
             yield return null;
         }
-
-        Debug.Log("Reached");
-        yield return new WaitForSeconds(3f);
-        Debug.Log("Finished");
     }
 
     void PlaySound() {
