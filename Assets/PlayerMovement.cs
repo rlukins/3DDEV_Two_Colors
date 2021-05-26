@@ -59,15 +59,15 @@ public class PlayerMovement : MonoBehaviour
 
         // Footstep sound
         if(isGround &&
-        Input.GetKey(KeyCode.W) ||
+        (Input.GetKey(KeyCode.W) ||
         Input.GetKey(KeyCode.A) ||
         Input.GetKey(KeyCode.S) ||
-        Input.GetKey(KeyCode.D)
+        Input.GetKey(KeyCode.D))
         ){ 
             PlaySound();
         }
     }
-    
+
     IEnumerator MyCoroutine(Transform Spider) {
         while(Vector3.Distance(transform.position, Spider.position) > 5f) {
             Spider.position = Vector3.Lerp(Spider.position, transform.position, 0.5f * Time.deltaTime);
